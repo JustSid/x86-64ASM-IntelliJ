@@ -1,0 +1,20 @@
+{
+	parserClass="com.widerwille.x86.parser.x86Parser"
+
+	extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+	psiClassPrefix="x86"
+	psiImplClassSuffix="Impl"
+	psiPackage="com.widerwille.x86.psi"
+	psiImplPackage="com.widerwille.x86.psi.impl"
+
+	elementTypeHolderClass="com.widerwille.x86.psi.x86Types"
+	elementTypeClass="com.widerwille.x86.psi.x86ElemetType"
+	tokenTypeClass="com.widerwille.x86.psi.x86TokenType"
+}
+
+x86File ::= root_rule_*
+
+private root_rule_ ::= (registers|INSTRUCTION|LEFT_PAREN|RIGHT_PAREN|SLASH|BACKSLASH|STAR|COLON|SEMICOLON|DOT|COMMA|LEFT_ANGLE|RIGHT_ANGLE|IDENTIFIER|VALUE|LABEL|PREPROCESSOR|COMMENT_LINE|COMMENT_BLOCK)
+
+registers ::= (REGISTER_GENERAL|REGISTER_SEGMENT|REGISTER_SPECIAL)

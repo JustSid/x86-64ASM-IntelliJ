@@ -1,0 +1,16 @@
+.idea/*.iml
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/vcs.xml
+.idea/misc.xml
+.idea/dictionaries
+.idea/InspectionProfiles
+
+/out/
+/gen/
+
+.DS_Store
+idea-flex.skeleton
+JFlex.jar
+src/com/widerwille/x86/x86Lexer.java
+src/com/widerwille/x86/x86Lexer.java~

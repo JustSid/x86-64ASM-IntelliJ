@@ -1,0 +1,37 @@
+<idea-plugin version="2">
+    <id>com.widerwille.x86.asm</id>
+    <name>x86-64 Assembler Support</name>
+    <version>1.0</version>
+    <vendor email="justsid@widerwille.com" url="http://www.widerwille.com">Sidney Just</vendor>
+
+    <description><![CDATA[
+      Enter short description for your plugin here.<br>
+      <em>most HTML tags may be used</em>
+    ]]></description>
+
+    <change-notes><![CDATA[
+      Add change notes here.<br>
+      <em>most HTML tags may be used</em>
+    ]]>
+    </change-notes>
+
+    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
+    <idea-version since-build="141.0"/>
+
+    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+         on how to target different products -->
+    <depends>com.intellij.modules.lang</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <fileTypeFactory implementation="com.widerwille.x86.x86FileTypeFactory" />
+
+        <lang.parserDefinition language="x86-64" implementationClass="com.widerwille.x86.x86ParserDefinition" />
+        <lang.syntaxHighlighterFactory key="x86-64" implementationClass="com.widerwille.x86.x86SyntaxHighlighterFactory" />
+        <colorSettingsPage implementation="com.widerwille.x86.x86ColorSettingsPage"/>
+    </extensions>
+
+    <actions>
+        <!-- Add your actions here -->
+    </actions>
+
+</idea-plugin>
