@@ -15,6 +15,27 @@
 
 x86File ::= root_rule_*
 
-private root_rule_ ::= (registers|INSTRUCTION|INSTRUCTION_PREFIX|STRING|LEFT_PAREN|RIGHT_PAREN|SLASH|BACKSLASH|STAR|COLON|SEMICOLON|DOT|COMMA|LEFT_ANGLE|RIGHT_ANGLE|IDENTIFIER|VALUE|LABEL|PREPROCESSOR|COMMENT_LINE|COMMENT_BLOCK)
+private root_rule_ ::= (registers|instructions|STRING|LEFT_PAREN|RIGHT_PAREN|SLASH|BACKSLASH|STAR|COLON|SEMICOLON|DOT|COMMA|LEFT_ANGLE|RIGHT_ANGLE|IDENTIFIER|VALUE|LABEL|PREPROCESSOR|COMMENT_LINE|COMMENT_BLOCK)
+private registers ::= (REGISTER_GENERAL|REGISTER_SEGMENT|REGISTER_SPECIAL)
 
-registers ::= (REGISTER_GENERAL|REGISTER_SEGMENT|REGISTER_SPECIAL)
+
+private segment ::= REGISTER_SEGMENT COLON VALUE
+private argument ::= segment | LEFT_PAREN [STAR] registers RIGHT_PAREN | [STAR] registers | VALUE | IDENTIFIER
+
+instructionCall ::= [INSTRUCTION_PREFIX] INSTRUCTION
+instructionUnary ::= [INSTRUCTION_PREFIX] INSTRUCTION (addressOperand | argument)
+instructionBinary ::= [INSTRUCTION_PREFIX] INSTRUCTION (addressOperand | argument) COMMA argument
+
+// segment:displacement(base register, offset register, scalar multiplier)
+
+/*
+movl    -4(%ebp, %edx, 4), %eax  # Full example: load *(ebp - 4 + (edx * 4)) into eax
+movl    -4(%ebp), %eax           # Typical example: load a stack variable into eax
+movl    (%ecx), %edx             # No offset: copy the target of a pointer into a register
+leal    8(,%eax,4), %eax         # Arithmetic: multiply eax by 4 and add 8
+leal    (%edx,%eax,2), %eax      # Arithmetic: multiply eax by 2 and add edx
+ */
+
+addressOperand ::= [VALUE] LEFT_PAREN [registers] [COMMA] registers [COMMA] [VALUE|IDENTIFIER] RIGHT_PAREN
+
+private instructions ::= (instructionBinary|instructionUnary|instructionCall)
