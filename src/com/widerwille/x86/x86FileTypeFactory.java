@@ -10,6 +10,7 @@ public class x86FileTypeFactory extends FileTypeFactory
 	@Override
 	public void createFileTypes(@NotNull FileTypeConsumer consumer)
 	{
-		consumer.consume(x86FileType.INSTANCE, "x86-64 Assembler");
+		for(String extension : x86FileType.DEFAULT_ASSOCIATED_EXTENSIONS)
+			consumer.consume(x86FileType.INSTANCE, extension);
 	}
 }

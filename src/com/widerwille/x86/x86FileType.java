@@ -9,6 +9,7 @@ import javax.swing.*;
 public class x86FileType extends LanguageFileType
 {
 	public static final x86FileType INSTANCE = new x86FileType();
+	public static final String[] DEFAULT_ASSOCIATED_EXTENSIONS = { "S" };
 
 	private x86FileType()
 	{
