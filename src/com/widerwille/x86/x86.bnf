@@ -36,6 +36,9 @@ leal    8(,%eax,4), %eax         # Arithmetic: multiply eax by 4 and add 8
 leal    (%edx,%eax,2), %eax      # Arithmetic: multiply eax by 2 and add edx
  */
 
-addressOperand ::= [VALUE] LEFT_PAREN [registers] [COMMA] registers [COMMA] [VALUE|IDENTIFIER] RIGHT_PAREN
+private baseOffsetMultiplier ::= (registers COMMA registers COMMA (VALUE | IDENTIFIER))
+private offsetMultiplier ::= (COMMA registers COMMA (VALUE | IDENTIFIER))
+
+addressOperand ::= [VALUE] LEFT_PAREN (baseOffsetMultiplier | offsetMultiplier | registers) RIGHT_PAREN
 
 private instructions ::= (instructionBinary|instructionUnary|instructionCall)
