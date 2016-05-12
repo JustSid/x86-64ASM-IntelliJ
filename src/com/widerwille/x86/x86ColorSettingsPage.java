@@ -23,6 +23,7 @@ public class x86ColorSettingsPage implements ColorSettingsPage
 			new AttributesDescriptor("Label", x86SyntaxHighlighter.LABEL),
 			new AttributesDescriptor("Instruction", x86SyntaxHighlighter.INSTRUCTION),
 			new AttributesDescriptor("Value", x86SyntaxHighlighter.VALUE),
+			new AttributesDescriptor("String", x86SyntaxHighlighter.STRING),
 	};
 
 	@Nullable

@@ -17,6 +17,7 @@ import static com.intellij.openapi.editor.colors.TextAttributesKey.createTextAtt
 public class x86SyntaxHighlighter extends SyntaxHighlighterBase
 {
 	public static final TextAttributesKey VALUE = createTextAttributesKey("x86_VALUE", DefaultLanguageHighlighterColors.CONSTANT);
+	public static final TextAttributesKey STRING = createTextAttributesKey("x86_STRING", DefaultLanguageHighlighterColors.STRING);
 	public static final TextAttributesKey BAD_CHARACTER = createTextAttributesKey("x86_BAD_CHARACTER", HighlighterColors.BAD_CHARACTER);
 
 	public static final TextAttributesKey PREPROCESSOR = createTextAttributesKey("x86_PREPROCESSOR", DefaultLanguageHighlighterColors.METADATA);
@@ -31,6 +32,7 @@ public class x86SyntaxHighlighter extends SyntaxHighlighterBase
 
 	private static final TextAttributesKey[] BAD_CHAR_KEYS = new TextAttributesKey[]{BAD_CHARACTER};
 	private static final TextAttributesKey[] VALUE_KEYS = new TextAttributesKey[]{VALUE};
+	private static final TextAttributesKey[] STRING_KEYS = new TextAttributesKey[]{STRING};
 	private static final TextAttributesKey[] INSTRUCTION_KEYS = new TextAttributesKey[]{INSTRUCTION};
 	private static final TextAttributesKey[] REGISTER_GENERAL_KEYS = new TextAttributesKey[]{REGISTER_GENERAL};
 	private static final TextAttributesKey[] REGISTER_SPECIAL_KEYS = new TextAttributesKey[]{REGISTER_SPECIAL};
@@ -67,6 +69,10 @@ public class x86SyntaxHighlighter extends SyntaxHighlighterBase
 		else if(tokenType.equals(x86Types.REGISTER_SEGMENT))
 		{
 			return REGISTER_SEGMENT_KEYS;
+		}
+		else if(tokenType.equals(x86Types.STRING))
+		{
+			return STRING_KEYS;
 		}
 		else if(tokenType.equals(x86Types.LABEL))
 		{

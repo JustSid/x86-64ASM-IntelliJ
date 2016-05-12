@@ -15,7 +15,7 @@ import com.widerwille.x86.psi.x86Types;
 %eof{  return;
 %eof}
 
-LINE_BREAK = \n|\r|\r\n
+LINE_BREAK  = \n|\r|\r\n
 WHITE_SPACE = [\ \t\f]
 
 REGISTERS_64BIT = RAX|RBX|RCX|RDC|RSI|RDI|RBP|RSP|R8|R9|R10|R11|R12|R13|R14|R16|rax|rbx|rcx|rdx|rsi|rdi|rsp|r8|r9|r10|r11|r12|r13|r14|r15|r16
@@ -52,10 +52,9 @@ LABEL = ([A-Za-z0-9])+?
 
 IMMEDIATE_VALUE = \$({NUMBER}|{IDENTIFIER})
 
-LINE_COMMENT        = "//"[^\r\n]*
-BLOCK_COMMENT       = "/*"([^"*"]|("*"+[^"*""/"]))*("*"+"/")?
+LINE_COMMENT  = "//"[^\r\n]*
+BLOCK_COMMENT = "/*"([^"*"]|("*"+[^"*""/"]))*("*"+"/")?
 
-%state IN_INSTRUCTION
 %state IN_PREPROCESSOR
 
 %%
@@ -67,23 +66,20 @@ BLOCK_COMMENT       = "/*"([^"*"]|("*"+[^"*""/"]))*("*"+"/")?
 	{WHITE_SPACE}+                 { return TokenType.WHITE_SPACE; }
 	\\({WHITE_SPACE}?){LINE_BREAK} { return x86Types.PREPROCESSOR; }
 	{LINE_BREAK}                   { yybegin(YYINITIAL); return x86Types.PREPROCESSOR; }
-	\"([^\"\r\n])*\"               { return x86Types.PREPROCESSOR; }
-	include                    { return x86Types.PREPROCESSOR; }
-	define                { return x86Types.PREPROCESSOR; }
-    undef                 { return x86Types.PREPROCESSOR; }
-    if                    { return x86Types.PREPROCESSOR; }
-    ifdef                 { return x86Types.PREPROCESSOR; }
-    ifndef                { return x86Types.PREPROCESSOR; }
-    else                  { return x86Types.PREPROCESSOR; }
-    elif                  { return x86Types.PREPROCESSOR; }
-    endif                 { return x86Types.PREPROCESSOR; }
-    error                 { return x86Types.PREPROCESSOR; }
-    pragma                { return x86Types.PREPROCESSOR; }
-    extension             { return x86Types.PREPROCESSOR; }
-    version               { return x86Types.PREPROCESSOR; }
-    line                  { return x86Types.PREPROCESSOR; }
-    defined               { return x86Types.PREPROCESSOR; }
-    ##                    { return x86Types.PREPROCESSOR; }
+	include                        { return x86Types.PREPROCESSOR; }
+	define                         { return x86Types.PREPROCESSOR; }
+	defined                        { return x86Types.PREPROCESSOR; }
+	undef                          { return x86Types.PREPROCESSOR; }
+	if                             { return x86Types.PREPROCESSOR; }
+	ifdef                          { return x86Types.PREPROCESSOR; }
+	ifndef                         { return x86Types.PREPROCESSOR; }
+	else                           { return x86Types.PREPROCESSOR; }
+	elif                           { return x86Types.PREPROCESSOR; }
+	endif                          { return x86Types.PREPROCESSOR; }
+	error                          { return x86Types.PREPROCESSOR; }
+	pragma                         { return x86Types.PREPROCESSOR; }
+	line                           { return x86Types.PREPROCESSOR; }
+	##                             { return x86Types.PREPROCESSOR; }
 }
 
 <YYINITIAL>
@@ -91,11 +87,15 @@ BLOCK_COMMENT       = "/*"([^"*"]|("*"+[^"*""/"]))*("*"+"/")?
 	({WHITE_SPACE}|{LINE_BREAK})+ { return TokenType.WHITE_SPACE; }
 }
 
+\"([^\"\r\n])*\" { return x86Types.STRING; }
+"<"([^>\r\n])*>  { return x86Types.STRING; }
+
 \%({REGISTERS_64BIT}|{REGISTERS_32BIT}|{REGISTERS_16BIT}|{REGISTERS_8BIT}) { return x86Types.REGISTER_GENERAL; }
 \%{SEGMENT_REGISTERS} { return x86Types.REGISTER_SEGMENT; }
 \%{SPECIAL_REGISTERS} { return x86Types.REGISTER_SPECIAL; }
 
-{BASE_INSTRUCTIONS}|{CONVERSION_INSTRUCTIONS}|{INSTRUCTION_PREFIXES}|{FPU_INSTRUCTIONS} { return x86Types.INSTRUCTION; }
+{INSTRUCTION_PREFIXES} { return x86Types.INSTRUCTION_PREFIX; }
+{BASE_INSTRUCTIONS}|{CONVERSION_INSTRUCTIONS}|{FPU_INSTRUCTIONS} { return x86Types.INSTRUCTION; }
 {MMX_INSTRUCTIONS}|{SSE_INSTRUCTIONS}|{SSE2_INSTRUCTIONS}|{SSE3_INSTRUCTIONS}|{SSSE3_INSTRUCTIONS}|{SSE_INSTRUCTIONS}|{SSE4_INSTRUCTIONS} { return x86Types.INSTRUCTION; }
 {BMI1_INSTRUCTIONS}|{BMI2_INSTRUCTIONS}|{ADX_INSTRUCTIONS} { return x86Types.INSTRUCTION; }
 {AES_INSTRUCTIONS}|{SHA_INSTRUCTIONS} { return x86Types.INSTRUCTION; }
@@ -113,12 +113,11 @@ BLOCK_COMMENT       = "/*"([^"*"]|("*"+[^"*""/"]))*("*"+"/")?
 "<" { return x86Types.LEFT_ANGLE; }
 ">" { return x86Types.RIGHT_ANGLE; }
 
-
 (\$)?{IDENTIFIER} { return x86Types.IDENTIFIER; }
-(\$)?{NUMBER} { return x86Types.VALUE; }
-{LABEL}\: { return x86Types.LABEL; }
+(\$)?{NUMBER}     { return x86Types.VALUE; }
+{LABEL}\:         { return x86Types.LABEL; }
 
-{LINE_COMMENT} { return x86Types.COMMENT_LINE; }
+{LINE_COMMENT}  { return x86Types.COMMENT_LINE; }
 {BLOCK_COMMENT} { return x86Types.COMMENT_BLOCK; }
 
 . { return TokenType.BAD_CHARACTER; }
